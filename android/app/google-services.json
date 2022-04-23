@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "808389544894",
+    "project_id": "catedral-75464",
+    "storage_bucket": "catedral-75464.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808389544894:android:5ff49e85f970b9536a07ef",
+        "android_client_info": {
+          "package_name": "br.com.malfferapp.catedral"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "808389544894-8djdunqeo5j412jkulo28cg0m6uiprg5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcMqtJY8b4JRJ1g6-R6Oy9aRXESsgv4Z4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "808389544894-8djdunqeo5j412jkulo28cg0m6uiprg5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
