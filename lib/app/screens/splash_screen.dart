@@ -1,7 +1,6 @@
 import 'dart:async';
-import 'package:catedral/app/screens/home/home_screen.dart';
+import 'package:catedral/app/screens/base/base_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -18,6 +17,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
+    //SystemChrome.setEnabledSystemUIOverlays([]);
     _controller = AnimationController(
       duration: Duration(seconds: 4),
       vsync: this,
@@ -34,16 +34,15 @@ class _SplashScreenState extends State<SplashScreen>
 
   void onCloseDialog() {
     if (mounted) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return const HomeScreen();
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
+        return BaseScreen();
       }));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-
+    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     return Scaffold(
         backgroundColor: Colors.white,
         body: Stack(
@@ -62,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen>
                 bottom: 50,
                 child: Image(
                   image: AssetImage('assets/logo_br.png'),
-                  width: 100,
+                  width: 150,
                 ))
           ],
         ));

@@ -17,14 +17,14 @@ class _CalendarioScreenState extends State<CalendarioScreen> {
     return Scaffold(
       appBar: AppBar(
         foregroundColor: const Color.fromARGB(255, 22, 125, 127),
-        title: Text('CALENDÁRIO ${DateTime.now().year}',
-            style: GoogleFonts.montserrat(
-                color: const Color.fromARGB(255, 22, 125, 127),
+        title: Text('Agenda ${DateTime.now().year}',
+            style: GoogleFonts.roboto(
+                color: Colors.black54,
                 fontWeight: FontWeight.bold,
-                fontSize: 22)),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+                fontSize: 18)),
+        centerTitle: false,
+        backgroundColor: Colors.white,
+        //automaticallyImplyLeading: false,
       ),
       body: Consumer<CalendarManager>(
         builder: (_, calendarManager, __){
