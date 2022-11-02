@@ -1,11 +1,9 @@
-
-
 import 'package:catedral/app/screens/biblia/models/dao/verse_dao.dart';
 import 'package:catedral/app/screens/biblia/models/verse.dart';
 import 'package:catedral/app/screens/biblia/services/base_bloc.dart';
 
 class VerseBloc extends BaseBloc<List<Verse>> {
-  VerseDao _dao = VerseDao();
+  final VerseDao _dao = VerseDao();
 
   Future<List<Verse>?> bookVerses(bookID, chapter) async {
     try {

@@ -1,27 +1,24 @@
 import 'dart:convert';
-
 import 'package:catedral/app/screens/biblia/models/entity.dart';
 
 Verse verseFromJson(String str) => Verse.fromMap(json.decode(str));
-
 String verseToJson(Verse data) => json.encode(data.toMap());
 
 class Verse extends Entity {
-  late int testament;
   late int bookID;
   late int chapter;
-  late int verseID;
-
-  late String bookName;
-  late String verseTxt;
+  int? testament;
+  int? verseID;
+  String? bookName;
+  String? verseTxt;
 
   Verse({
-    required this.testament,
     required this.bookID,
     required this.chapter,
-    required this.verseID,
-    required this.verseTxt,
-    required this.bookName,
+    this.testament,
+    this.verseID,
+    this.verseTxt,
+    this.bookName,
   });
 
   factory Verse.fromMap(Map<String, dynamic> json) => Verse(

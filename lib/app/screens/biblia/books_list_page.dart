@@ -9,16 +9,15 @@ import 'package:flutter/material.dart';
 
 class BooksListPage extends StatefulWidget {
   final Testament testament;
-
-  BooksListPage(this.testament);
+  const BooksListPage(this.testament, {Key? key}) : super(key: key);
 
   @override
-  _BooksListPageState createState() => _BooksListPageState();
+  BooksListPageState createState() => BooksListPageState();
 }
 
-class _BooksListPageState extends State<BooksListPage> {
+class BooksListPageState extends State<BooksListPage> {
   late String title;
-  BooksBloc _bloc = BooksBloc();
+  final BooksBloc _bloc = BooksBloc();
 
   @override
   void initState() {
@@ -33,17 +32,17 @@ class _BooksListPageState extends State<BooksListPage> {
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.search, color: background),
+            icon: const Icon(Icons.search, color: background),
             onPressed: () {
               push(context, SearchPage(widget.testament));
             },
           ),
           IconButton(
-            icon: Icon(Icons.home, color: inverse),
+            icon: const Icon(Icons.home, color: inverse),
             onPressed: () => goHome(context),
           ),
         ],
-        title: Text("Bíblia"),
+        title: const Text("Bíblia"),
       ),
       body: _body(),
     );
@@ -53,9 +52,11 @@ class _BooksListPageState extends State<BooksListPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding:
-              const EdgeInsets.only(left: 10, top: 15, right: 10, bottom: 15),
+        const Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 15,
+          ),
           child: Text(
             "LIVROS",
             style: TextStyle(fontSize: 20),
@@ -66,20 +67,26 @@ class _BooksListPageState extends State<BooksListPage> {
           child: StreamBuilder(
               stream: _bloc.stream,
               builder: (context, snapshot) {
-                if (snapshot.hasError)
-                  return centerText("Erro lendo a lista de livros.");
+                if (snapshot.hasError) {
+                  return centerText(
+                    "Erro lendo a lista de livros.",
+                  );
+                }
 
-                if (!snapshot.hasData)
-                  return Center(child: CircularProgressIndicator());
-
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
                 List<Book>? books = snapshot.data as List<Book>?;
 
                 return Scrollbar(
                   child: ListView.builder(
                     itemExtent: 45,
                     itemCount: (books != null) ? books.length : 0,
-                    itemBuilder: (context, index) =>
-                        _itemView(context, books, index),
+                    itemBuilder: (context, index) {
+                      return _itemView(context, books!, index);
+                    },
                   ),
                 );
               }),
@@ -88,37 +95,37 @@ class _BooksListPageState extends State<BooksListPage> {
     );
   }
 
-  _itemView(context, books, index) {
+  _itemView(context, List<Book> books, int index) {
     Book book = books[index];
-    int idxBook = index;
 
     return GestureDetector(
       onTap: () {
-        push(context, ChaptersListPage(books, idxBook));
+        push(
+          context,
+          ChaptersListPage(books, index),
+        );
       },
-      child: Container(
-        child: Card(
-          elevation: 5,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  book.bookName,
-                  style: TextStyle(fontSize: 18),
-                ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
-                )
-              ],
-            ),
+      child: Card(
+        elevation: 5,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                book.bookName,
+                style: const TextStyle(fontSize: 18),
+              ),
+              const Icon(
+                Icons.arrow_forward_ios,
+                size: 16,
+              )
+            ],
           ),
-          // onTap: () {
-          //   push(context, ChaptersListPage(books, idxBook));
-          // },
         ),
+        // onTap: () {
+        //   push(context, ChaptersListPage(books, idxBook));
+        // },
       ),
     );
   }

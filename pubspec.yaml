@@ -36,13 +36,14 @@ dependencies:
   connectivity_plus: ^2.3.8
   http: ^0.13.3
   sqflite: ^2.0.0
-  rxdart: ^0.24.0
-  easy_rich_text: ^0.2.2
-  share: ^0.6.4
+  rxdart: ^0.27.5
+  easy_rich_text: ^1.1.0
+  share_plus: ^6.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^2.0.0
 
 flutter_native_splash:
   color: "#167d7f"
@@ -55,8 +56,6 @@ flutter_icons:
   ios: true
   remove_alpha_ios: true
 
-  flutter_lints: ^1.0.0
-
 # The following section is specific to Flutter.
 flutter:
 
@@ -65,6 +64,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - assets/icon.png
+     - assets/create.sql
      - assets/svg/
      - assets/
   #   - images/a_dot_ham.jpeg

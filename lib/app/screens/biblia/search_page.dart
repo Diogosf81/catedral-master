@@ -1,4 +1,4 @@
-import 'dart:ui';
+// ignore_for_file: import_of_legacy_library_into_null_safe, must_be_immutable, use_key_in_widget_constructors, use_build_context_synchronously
 
 import 'package:catedral/app/screens/biblia/chapter_page.dart';
 import 'package:catedral/app/screens/biblia/models/book.dart';
@@ -11,22 +11,20 @@ import 'package:catedral/app/screens/biblia/utils/navigator.dart';
 import 'package:catedral/app/screens/biblia/utils/widgets.dart';
 import 'package:easy_rich_text/easy_rich_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 class SearchPage extends StatefulWidget {
   Testament? testament;
-
   SearchPage([this.testament]);
 
   @override
-  _SearchPageState createState() => new _SearchPageState();
+  SearchPageState createState() => SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
-  final TextEditingController _controller = new TextEditingController();
+class SearchPageState extends State<SearchPage> {
+  final TextEditingController _controller = TextEditingController();
 
-  VerseBloc _bloc = VerseBloc();
-  BooksBloc _booksBloc = BooksBloc();
+  final VerseBloc _bloc = VerseBloc();
+  final BooksBloc _booksBloc = BooksBloc();
   bool _isSearching = false;
 
   @override
@@ -40,7 +38,10 @@ class _SearchPageState extends State<SearchPage> {
         title: Text(title),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.home, color: inverse),
+            icon: const Icon(
+              Icons.home,
+              color: inverse,
+            ),
             onPressed: () => goHome(context),
           )
         ],
@@ -72,12 +73,16 @@ class _SearchPageState extends State<SearchPage> {
       children: <Widget>[
         Expanded(
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             height: 40,
             child: TextField(
               controller: _controller,
+              onSubmitted: (s) {
+                _isSearching = true;
+                _bloc.versesByWord(_controller.text);
+              },
               autofocus: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                     color: primary,
@@ -90,7 +95,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
         IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.search,
             color: primary,
             size: 26,
@@ -109,21 +114,30 @@ class _SearchPageState extends State<SearchPage> {
     return StreamBuilder(
         stream: _bloc.stream,
         builder: (context, snapshot) {
-          if (snapshot.hasError)
-            return centerText("Erro lendo a lista de versículos.");
+          if (snapshot.hasError) {
+            return centerText(
+              "Erro lendo a lista de versículos.",
+            );
+          }
 
-          if (!snapshot.hasData && _isSearching)
-            return Center(child: CircularProgressIndicator());
+          if (!snapshot.hasData && _isSearching) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
           verses = snapshot.data as List<Verse>?;
 
-          if (verses == null)
+          if (verses == null) {
             return centerText(
               "Informe a palavra a ser pesquisada.",
               color: Colors.black,
             );
+          }
 
-          if (verses?.length == 0) return centerText("Palavra não encontrada!");
+          if (verses != null && verses!.isEmpty) {
+            return centerText("Palavra não encontrada!");
+          }
 
           return _listView(verses);
         });
@@ -143,10 +157,10 @@ class _SearchPageState extends State<SearchPage> {
     String search = _controller.text;
 
     double size = fontSize - 2;
-    EasyRichText verseTagged = richText(verse.verseTxt, search, size);
+    EasyRichText verseTagged = richText(verse.verseTxt!, search, size);
 
     return ListTile(
-      contentPadding: EdgeInsets.only(left: 16, right: 12),
+      contentPadding: const EdgeInsets.only(left: 16, right: 12),
       title: Text(
         verse.reference(),
         style: TextStyle(
@@ -169,7 +183,7 @@ class _SearchPageState extends State<SearchPage> {
       List<Book>? books = await _booksBloc.book(verse.bookID);
       push(
         context,
-        ChapterPage(verse.chapter, 0, books!, verse.verseTxt),
+        ChapterPage(verse.chapter, 0, books!, verse.verseTxt!),
       );
     } catch (e) {
       return centerText("Erro ao exibir o capítulo.");

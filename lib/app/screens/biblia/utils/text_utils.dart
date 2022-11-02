@@ -1,15 +1,15 @@
-/**
- * Devolve o texto informado, retirando os trechos entre colchetes [],
- * ou seja, as observações, referências e traduções alteranativas.
- */
-String cleanVerse(String verseText) {
+///
+/// Devolve o texto informado, retirando os trechos entre colchetes [],
+/// ou seja, as observações, referências e traduções alteranativas.
+///
+String cleanVerse(String? verseText) {
   if (verseText == null) return "";
 
   List<String> listChars = verseText.split("");
   List<String> newText = [];
   bool isReference = false;
 
-  listChars.forEach((f) {
+  for (String f in listChars) {
     if (f == "[") {
       isReference = true;
     } else if (f == "]") {
@@ -19,11 +19,12 @@ String cleanVerse(String verseText) {
         newText.add(f);
       }
     }
-  });
+  }
   return newText.join("");
 }
 
-capitalize(String word){
+capitalize(String word) {
+  if (word.isEmpty) return "";
   String first = word[0].toUpperCase();
   return "$first${word.substring(1)}";
 }
@@ -78,18 +79,19 @@ capitalize(String word){
 //  return "${ret.join("")}...";
 //}
 
-/**
- * Garante um ponto ao final do texto, mantendo o ponto de exclamação
- * ou de interrogação, se houver.
- */
+///
+/// Garante um ponto ao final do texto, mantendo o ponto de exclamação
+/// ou de interrogação, se houver.
+///
 String dotAtEnd(String txt) {
   txt = cleanVerse(txt);
 
   String firstChar = txt.substring(0, 1).toUpperCase();
   String lastChar = txt.substring(txt.length - 1);
 
-  if ("?!".contains(lastChar))
+  if ("?!".contains(lastChar)) {
     return "$firstChar${txt.substring(1, txt.length)}";
+  }
 
   return "$firstChar${txt.substring(1, txt.length - 1)}.";
 }

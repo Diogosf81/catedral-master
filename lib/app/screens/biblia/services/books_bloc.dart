@@ -3,9 +3,8 @@ import 'package:catedral/app/screens/biblia/models/dao/books_dao.dart';
 import 'package:catedral/app/screens/biblia/services/base_bloc.dart';
 import 'package:catedral/app/screens/biblia/utils/constants.dart';
 
-class BooksBloc  extends BaseBloc<List<Book>>{
-
-  BooksDao _dao = BooksDao();
+class BooksBloc extends BaseBloc<List<Book>> {
+  final BooksDao _dao = BooksDao();
 
   Future<List<Book>?> book(int bookID) async {
     try {
@@ -23,7 +22,6 @@ class BooksBloc  extends BaseBloc<List<Book>>{
       List<Book>? books = (await _dao.booksList(testament)).cast<Book>();
       add(books);
       return books;
-      
     } catch (e) {
       addError(e);
       return null;

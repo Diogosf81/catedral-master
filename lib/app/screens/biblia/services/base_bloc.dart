@@ -1,3 +1,4 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
 import 'package:rxdart/rxdart.dart';
 
 class BaseBloc<T> {
@@ -5,19 +6,19 @@ class BaseBloc<T> {
 
   ValueStream<T> get stream => _controller.stream;
 
-  void add(T obj){
-    if(! _controller.isClosed){
+  void add(T obj) {
+    if (!_controller.isClosed) {
       _controller.add(obj);
     }
   }
 
-  void addError(obj){
-    if(! _controller.isClosed){
+  void addError(obj) {
+    if (!_controller.isClosed) {
       _controller.addError(obj);
     }
   }
 
-  void dispose(){
+  void dispose() {
     _controller.close();
   }
 }

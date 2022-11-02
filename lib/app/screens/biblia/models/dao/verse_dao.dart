@@ -20,7 +20,7 @@ class VerseDao extends BaseDAO<Verse> {
         [bookID, chapter]);
   }
 
-  Future<List<Verse>?> versesByWords(String searchText) async {
+  Future<List<Verse>?> versesByWords(String? searchText) async {
     if (searchText == null) return null;
 
     searchText = searchText.replaceAll(" ", "%");

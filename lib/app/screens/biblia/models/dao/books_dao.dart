@@ -1,5 +1,3 @@
-
-
 import 'package:catedral/app/screens/biblia/models/book.dart';
 import 'package:catedral/app/screens/biblia/models/dao/base_dao.dart';
 import 'package:catedral/app/screens/biblia/utils/constants.dart';
@@ -7,7 +5,6 @@ import 'package:catedral/app/screens/biblia/utils/constants.dart';
 class BooksDao extends BaseDAO<Book> {
   @override
   String get tableName => "BooksList";
-
   String get favoriteTable => "Favorites";
 
   @override
@@ -17,16 +14,22 @@ class BooksDao extends BaseDAO<Book> {
 
   Future<List<Book>> bookById(bookID) async {
     return await query(
-        "select * from $tableName where Book=? order by Book", [bookID]);
+      "select * from $tableName where Book=? order by Book",
+      [bookID],
+    );
   }
 
   Future<List<Book>> booksList(Testament testament) async {
-    if (testament == Testament.ALL)
-      return await query("select * from $tableName order by Book");
-    else {
+    if (testament == Testament.ALL) {
+      return await query(
+        "select * from $tableName order by Book",
+      );
+    } else {
       int t = (testament == Testament.AT) ? 1 : 2;
       return await query(
-          "select * from $tableName where Testament=? order by Book", [t]);
+        "select * from $tableName where Testament=? order by Book",
+        [t],
+      );
     }
   }
 

@@ -1,11 +1,11 @@
+// ignore_for_file: import_of_legacy_library_into_null_safe
+
 import 'package:catedral/app/screens/biblia/models/book.dart';
 import 'package:catedral/app/screens/biblia/models/verse.dart';
 import 'package:catedral/app/screens/biblia/utils/text_utils.dart';
-import 'package:catedral/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:share/share.dart';
-
+import 'package:share_plus/share_plus.dart';
 import 'constants.dart';
 
 bottomSheetSaved(context, Book book) {
@@ -25,7 +25,8 @@ bottomSheetSaved(context, Book book) {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   ElevatedButton(
-                      child: Text("REGISTRAR COMO LIDO",
+                      child: const Text(
+                        "REGISTRAR COMO LIDO",
                         style: TextStyle(color: background),
                       ),
                       onPressed: () {
@@ -122,15 +123,14 @@ _shareButton(context, Verse verse) {
   return Builder(builder: (BuildContext context) {
     return IconButton(
       alignment: Alignment.topLeft,
-      icon: Icon(
+      icon: const Icon(
         Icons.share,
         color: background,
         size: 30,
       ),
       onPressed: () {
         Navigator.pop(context);
-        final text = "${cleanVerse(verse.verseTxt)} \n${verse.reference()}";
-        //final RenderBox box = context.findRenderObject();
+        final text = "${cleanVerse(verse.verseTxt!)} \n${verse.reference()}";
         Share.share(
           text,
           //sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
@@ -144,7 +144,7 @@ _backButton(context) {
   return Expanded(
     child: IconButton(
         alignment: Alignment.topLeft,
-        icon: Icon(
+        icon: const Icon(
           Icons.arrow_back,
           color: background,
           size: 30,
@@ -155,46 +155,17 @@ _backButton(context) {
   );
 }
 
-_favoriteButton(context, isRemovable) {
-  return Expanded(
-    child: isRemovable
-        ? IconButton(
-            tooltip: "Excluir dos favoritos",
-            icon: Icon(
-              Icons.delete_outline,
-              color: background,
-              size: 30,
-            ),
-            onPressed: () {
-              //bloc.remove(favorite);
-              Navigator.pop(context);
-            })
-        : IconButton(
-            tooltip: "Favoritar",
-            icon: Icon(
-              Icons.favorite_border,
-              color: background,
-              size: 30,
-            ),
-            onPressed: () {
-              // favorite.type = FavoriteType.MINE.index;
-              // bloc.include(favorite);
-              Navigator.pop(context);
-            }),
-  );
-}
-
 _copyButton(context, Verse verse) {
   return Expanded(
     child: IconButton(
       tooltip: "Copiar",
-      icon: Icon(
+      icon: const Icon(
         Icons.content_copy,
         color: background,
         size: 28,
       ),
       onPressed: (() {
-        final txt = "${cleanVerse(verse.verseTxt)} \n${verse.reference()}";
+        final txt = "${cleanVerse(verse.verseTxt!)} \n${verse.reference()}";
         Clipboard.setData(ClipboardData(text: txt));
         Navigator.pop(context);
       }),

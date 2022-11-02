@@ -1,30 +1,30 @@
 import 'package:catedral/app/screens/biblia/chapter_page.dart';
 import 'package:catedral/app/screens/biblia/models/book.dart';
 import 'package:catedral/app/screens/biblia/search_page.dart';
+import 'package:catedral/app/screens/biblia/services/books_bloc.dart';
 import 'package:catedral/app/screens/biblia/utils/constants.dart';
 import 'package:catedral/app/screens/biblia/utils/navigator.dart';
-import 'package:catedral/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 class ChaptersListPage extends StatefulWidget {
-  final idxBook;
+  final int idxBook;
   final List<Book> books;
-
-  ChaptersListPage(this.books, this.idxBook);
+  const ChaptersListPage(this.books, this.idxBook, {Key? key})
+      : super(key: key);
 
   @override
-  _ChaptersListPageState createState() => _ChaptersListPageState();
+  ChaptersListPageState createState() => ChaptersListPageState();
 }
 
-class _ChaptersListPageState extends State<ChaptersListPage> {
+class ChaptersListPageState extends State<ChaptersListPage> {
   late Book book;
   late List<int> chaptersList;
+  final BooksBloc _bloc = BooksBloc();
 
   @override
   void initState() {
     book = widget.books[widget.idxBook];
-    //booksBloc.markedChapters(book);
+    _bloc.book(book.bookID);
     super.initState();
   }
 
@@ -35,7 +35,7 @@ class _ChaptersListPageState extends State<ChaptersListPage> {
         title: Text(book.bookName),
         actions: <Widget>[
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.search,
               size: 25,
               color: background,
@@ -45,7 +45,7 @@ class _ChaptersListPageState extends State<ChaptersListPage> {
             },
           ),
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.home,
               size: 25,
               color: background,
@@ -64,9 +64,13 @@ class _ChaptersListPageState extends State<ChaptersListPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding:
-              const EdgeInsets.only(left: 20, top: 15, right: 10, bottom: 0),
+        const Padding(
+          padding: EdgeInsets.only(
+            left: 20,
+            top: 15,
+            right: 10,
+            bottom: 0,
+          ),
           child: Text(
             "CAPÍTULOS",
             style: TextStyle(fontSize: 20),
@@ -75,19 +79,26 @@ class _ChaptersListPageState extends State<ChaptersListPage> {
         Flexible(
           flex: 1,
           child: StreamBuilder(
-              stream: booksBloc.stream, // ,
+              stream: _bloc.stream,
               builder: (context, snapshot) {
-                if (snapshot.hasError)
-                  return Center(child: Text("Erro lendo a lista de capítulos."));
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: Text("Erro lendo a lista de capítulos."),
+                  );
+                }
 
-                if (!snapshot.hasData)
-                  return Center(child: CircularProgressIndicator());
+                if (!snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
                 return GridView.builder(
                   itemCount: book.chapters,
-                  padding: EdgeInsets.all(20),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 5),
+                  padding: const EdgeInsets.all(20),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 5,
+                  ),
                   itemBuilder: (context, index) => _itemView(context, index),
                 );
               }),
@@ -97,18 +108,22 @@ class _ChaptersListPageState extends State<ChaptersListPage> {
   }
 
   _itemView(context, index) {
-    int chapter = (book == null) ? 0 : book.chaptersList[index];
+    int chapter = book.chaptersList[index];
 
     return Padding(
       padding: const EdgeInsets.all(5),
       child: Container(
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(
-            color: Colors.black26,
-            offset: Offset(0, 1),
-            blurRadius: 2,
-          )
-        ], borderRadius: BorderRadius.circular(8), color: Colors.white),
+        decoration: BoxDecoration(
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              offset: Offset(0, 1),
+              blurRadius: 2,
+            )
+          ],
+          borderRadius: BorderRadius.circular(8),
+          color: Colors.white,
+        ),
         child: InkWell(
           child: Center(
             child: Container(

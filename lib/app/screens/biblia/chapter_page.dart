@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, use_key_in_widget_constructors
+
 import 'package:catedral/app/screens/biblia/models/book.dart';
 import 'package:catedral/app/screens/biblia/models/verse.dart';
 import 'package:catedral/app/screens/biblia/services/verse_bloc.dart';
@@ -8,7 +10,6 @@ import 'package:catedral/app/screens/biblia/utils/text_utils.dart';
 import 'package:flutter/material.dart';
 
 class ChapterPage extends StatefulWidget {
-
   late List<Book> books;
   late String verseText;
   late Book book;
@@ -19,20 +20,20 @@ class ChapterPage extends StatefulWidget {
   ChapterPage(this.chapter, this.idxBook, this.books, [this.verseText = ""]);
 
   @override
-  _ChapterPageState createState() => _ChapterPageState();
+  ChapterPageState createState() => ChapterPageState();
 }
 
-class _ChapterPageState extends State<ChapterPage> {
+class ChapterPageState extends State<ChapterPage> {
   late ScrollController controller;
   DateTime initRead = DateTime.now();
   DateTime endRead = DateTime.now();
   int qtdVerses = 0;
 
-  VerseBloc _bloc = VerseBloc();
+  final VerseBloc _bloc = VerseBloc();
   // FavoritesBloc _favBloc = FavoritesBloc();
   late Book book;
 
-  _ChapterPageState();
+  ChapterPageState();
 
   @override
   void initState() {
@@ -51,13 +52,15 @@ class _ChapterPageState extends State<ChapterPage> {
           return Scaffold(
             appBar: AppBar(
               title: Text(
-                  "${book.bookName.toUpperCase()}, CAPÍTULO ${widget.chapter}"),
+                "${book.bookName.toUpperCase()}, CAPÍTULO ${widget.chapter}",
+              ),
               actions: <Widget>[
                 IconButton(
-                    icon: Icon(Icons.home),
-                    onPressed: () {
-                      goHome(context);
-                    })
+                  icon: const Icon(Icons.home),
+                  onPressed: () {
+                    goHome(context);
+                  },
+                )
               ],
             ),
             body: _body(),
@@ -71,11 +74,17 @@ class _ChapterPageState extends State<ChapterPage> {
       child: StreamBuilder(
         stream: _bloc.stream,
         builder: (context, snapshot) {
-          if (snapshot.hasError)
-            return Center(child: Text("Erro lendo a lista de versículos."));
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text("Erro lendo a lista de versículos."),
+            );
+          }
 
-          if (!snapshot.hasData)
-            return Center(child: CircularProgressIndicator());
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
           return _listView(snapshot.data);
         },
@@ -107,9 +116,9 @@ class _ChapterPageState extends State<ChapterPage> {
         _onLongPress(bible);
       },
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
         child: Text(
-          "${bible.verseID}. ${cleanVerse(bible.verseTxt)}",
+          "${bible.verseID}. ${cleanVerse(bible.verseTxt!)}",
           style: TextStyle(
             fontSize: fontSize,
             fontWeight: weight,
@@ -147,8 +156,6 @@ class _ChapterPageState extends State<ChapterPage> {
     //     Favorite.marked(bookID: book.bookID, chapter: widget.chapter);
 
     if (controller.position.atEdge) {
-      int secs = qtdVerses * 5;
-
       if (controller.position.pixels != 0) {
         endRead = DateTime.now();
         // if (endRead.difference(initRead) > Duration(seconds: secs)) {

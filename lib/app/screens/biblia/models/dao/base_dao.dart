@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:async';
 import 'package:catedral/app/screens/biblia/models/dao/db_helper.dart';
 import 'package:catedral/app/screens/biblia/models/entity.dart';
@@ -5,20 +7,14 @@ import 'package:sqflite/sqflite.dart';
 
 // Data Access Object (by R. Lecheta - https://github.com/rlechetaudemy)
 abstract class BaseDAO<T extends Entity> {
-  Future<Database> get db =>
-      DatabaseHelper
-          .getInstance()
-          .db;
+  Future<Database> get db => DatabaseHelper.getInstance().db;
 
   String get tableName;
-
   T fromMap(Map<String, dynamic> map);
 
-  Future<List<T>> query(String sql, [List<dynamic>? arguments]) async {
+  Future<List<T>> query(String sql, [List<Object?>? arguments]) async {
     final dbClient = await db;
-
     final list = await dbClient.rawQuery(sql, arguments);
-
     return list.map<T>((json) => fromMap(json)).toList();
   }
 
@@ -28,7 +24,7 @@ abstract class BaseDAO<T extends Entity> {
 
   Future<T> findById(int id) async {
     List<T> list =
-    await query('select * from $tableName where ${tableName}_Id = ?', [id]);
+        await query('select * from $tableName where ${tableName}_Id = ?', [id]);
 
     return list.first;
   }
